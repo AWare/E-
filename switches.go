@@ -1,9 +1,8 @@
 package main
 
 import (
-	"os"
+	"os/exec"
 	"strconv"
-	"syscall"
 )
 
 type statusSwitch struct {
@@ -23,7 +22,7 @@ func (s *statusSwitch) Off() error {
 const path string = "/home/pi/433Utils/RPi_utils/codesend"
 
 func sendCode(code int) error {
-	env := os.Environ()
-	args := []string{"codesend", strconv.Itoa(code)}
-	return syscall.Exec(path, args, env)
+	c := exec.Command(path, strconv.Itoa(code))
+	c.Run()
+	return nil
 }
