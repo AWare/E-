@@ -15,10 +15,17 @@ func main() {
 		"four":  statusSwitch{os.Getenv("FOURON"), os.Getenv("FOUROFF")},
 	}
 
+	key := os.Getenv("RFKEY")
+
 	switchHandler := func(w http.ResponseWriter, r *http.Request) {
 		var dat struct {
 			Switch string
 			Action string
+		}
+		secret := r.Header.Get("badlykeptsecret")
+		if secret != key {
+			fmt.Fprintln(w, "¯\\_(ツ)_/¯")
+			return
 		}
 		d := json.NewDecoder(r.Body)
 		d.Decode(&dat)
@@ -36,7 +43,7 @@ func main() {
 		}
 		if dat.Action == "off" {
 			s.Off()
-			fmt.Fprintln(w, "👍𝍈")
+			fmt.Fprintln(w, "👍❌")
 			return
 		}
 		fmt.Fprintln(w, "¯\\_(ツ)_/¯ (no action)")

@@ -22,12 +22,16 @@
   <div id="resp"></div>
   <script type="text/javascript">
   'use strict';
-
-  console.log("hello");
+  if(!localStorage.getItem('secret')){
+    localStorage.setItem('secret',prompt("😅"));
+  }
 
   function postSwitch(sw,a) {
     fetch('/switch/',{
       method: 'post',
+      headers: new Headers({
+        'badlykeptsecret': localStorage.secret
+      }),
       body: JSON.stringify({
         Switch: sw,
         Action: a
@@ -36,7 +40,7 @@
         return r.text()
      }).then((t)=>{
         let e = document.getElementById('resp');
-        e.innerHTML = t;
+        e.innerHTML = sw + t;
       });
   }
 
@@ -74,9 +78,9 @@
     onButton.appendChild(onText);
     offButton.appendChild(offText);
 
-    container.appendChild(btnText);
     container.appendChild(onButton);
     container.appendChild(offButton);
+    container.appendChild(btnText);
 
     root.appendChild(container);
   }
