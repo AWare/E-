@@ -1,43 +1,48 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/switch/", switchHandler())
-	http.Handle("/", http.FileServer(http.Dir("./public/")))
-	fmt.Println("HANDLING HTTP")
-	http.ListenAndServe(":8080", nil)
-}
-
-func switchHandler() func(w http.ResponseWriter, r *http.Request) {
 	switches := map[string]statusSwitch{"one": statusSwitch{7289615, 7289607}}
-	fmt.Println("Making handler.")
-	return func(w http.ResponseWriter, r *http.Request) {
-		k := r.PostFormValue("switch")
-		action := r.PostFormValue("action")
-		fmt.Println(k, action)
-		s, exists := switches[k]
+	switchHandler := func(w http.ResponseWriter, r *http.Request) {
+		var dat struct {
+			Switch string
+			Action string
+		}
+		d := json.NewDecoder(r.Body)
+		d.Decode(&dat)
+		fmt.Println(dat)
+		s, exists := switches[dat.Switch]
 		if !exists {
-			fmt.Fprintln(w, "¯\\_(ツ)_/¯")
+			fmt.Println(w, dat.Switch)
+			fmt.Fprintln(w, "¯\\_(ツ)_/¯ (no switch)")
 			return
 		}
-		if action == "on" {
+		if dat.Action == "on" {
 			s.On()
 			fmt.Fprintln(w, "👍💡")
 			return
 		}
-		if action == "off" {
+		if dat.Action == "off" {
 			s.Off()
 			fmt.Fprintln(w, "👍𝍈")
 			return
 		}
-		fmt.Fprintln(w, "¯\\_(ツ)_/¯")
+		fmt.Fprintln(w, "¯\\_(ツ)_/¯ (no action)")
 		return
 	}
-}
-func testHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "HELLO")
+	listSwitchesHandler := func(w http.ResponseWriter, r *http.Request) {
+		s, _ := json.Marshal(switches)
+		fmt.Fprint(w, string(s))
+	}
+
+	http.HandleFunc("/switch/", switchHandler)
+	http.HandleFunc("/list/", listSwitchesHandler)
+	http.Handle("/", http.FileServer(http.Dir("./public/")))
+	fmt.Println("HANDLING HTTP")
+	http.ListenAndServe(":8080", nil)
 }

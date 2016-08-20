@@ -1,9 +1,88 @@
 <html>
-<body>
-  <form action="/switch/" method="post">
-    <input type="hidden" name="switch" value="one"/>
-    <input type="text" name="action"/>
-    <input type="submit"/>
-  </form>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+  <style>
+  body{
+    font-family: 'Space Mono', monospace;
+    font-size: 5em;
+    background: #333;
+    color: #eee;
+  }
+  button{
+    font-family: 'Space Mono', monospace;
+    font-size: 1em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.5em;
+
+  }
+  </style>
+</head>
+<div id="switches"></div>
+  <div id="resp"></div>
+  <script type="text/javascript">
+  'use strict';
+
+  console.log("hello");
+
+  function postSwitch(sw,a) {
+    fetch('/switch/',{
+      method: 'post',
+      body: JSON.stringify({
+        Switch: sw,
+        Action: a
+      })
+     }).then((r)=>{
+        return r.text()
+     }).then((t)=>{
+        let e = document.getElementById('resp');
+        e.innerHTML = t;
+      });
+  }
+
+  function getSwitches() {
+    fetch('/list/').
+      then((r)=>{
+        return r.text()
+      }).then((t)=>{
+        var s = JSON.parse(t);
+        var switches = Object.keys(s);
+        switches.forEach(addSwitch);
+      });
+  }
+
+  function addSwitch(s){
+    var root = document.getElementById('switches');
+
+    var onText = document.createTextNode('on');
+    var offText = document.createTextNode('off');
+    var btnText = document.createTextNode(s);
+
+    var onButton = document.createElement('button');
+    var offButton = document.createElement('button');
+
+    var container = document.createElement('div');
+
+    onButton.addEventListener('click', (e) => {
+      postSwitch(s,"on");
+      e.preventDefault();
+    });
+    offButton.addEventListener('click', (e) => {
+      postSwitch(s,"off");
+      e.preventDefault();
+    });
+    onButton.appendChild(onText);
+    offButton.appendChild(offText);
+
+    container.appendChild(btnText);
+    container.appendChild(onButton);
+    container.appendChild(offButton);
+
+    root.appendChild(container);
+  }
+
+  getSwitches();
+
+  </script>
 </body>
 </html>
