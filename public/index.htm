@@ -50,7 +50,15 @@
         return r.text()
       }).then((t)=>{
         var s = JSON.parse(t);
-        var switches = Object.keys(s);
+        var switches = Object.keys(s).sort((a,b)=>{
+          if(a < b){
+            return -1;
+          }
+          if (a > b){
+            return 1;
+          }
+          return 0;
+        });
         switches.forEach(addSwitch);
       });
   }
