@@ -1,13 +1,10 @@
 package main
 
-import (
-	"os/exec"
-	"strconv"
-)
+import "os/exec"
 
 type statusSwitch struct {
-	onCode  int
-	offCode int
+	onCode  string
+	offCode string
 }
 
 func (s *statusSwitch) On() error {
@@ -21,8 +18,8 @@ func (s *statusSwitch) Off() error {
 
 const path string = "/home/pi/433Utils/RPi_utils/codesend"
 
-func sendCode(code int) error {
-	c := exec.Command(path, strconv.Itoa(code))
+func sendCode(code string) error {
+	c := exec.Command(path, code)
 	c.Run()
 	return nil
 }

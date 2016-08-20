@@ -4,10 +4,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 func main() {
-	switches := map[string]statusSwitch{"one": statusSwitch{7289615, 7289607}}
+	switches := map[string]statusSwitch{
+		"one":   statusSwitch{os.Getenv("ONEON"), os.Getenv("ONEOFF")},
+		"two":   statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF")},
+		"three": statusSwitch{os.Getenv("THREEON"), os.Getenv("THREEOFF")},
+		"four":  statusSwitch{os.Getenv("FOURON"), os.Getenv("FOUROFF")},
+	}
+
 	switchHandler := func(w http.ResponseWriter, r *http.Request) {
 		var dat struct {
 			Switch string
