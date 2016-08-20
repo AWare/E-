@@ -9,10 +9,9 @@ import (
 
 func main() {
 	switches := map[string]statusSwitch{
-		"one":   statusSwitch{os.Getenv("ONEON"), os.Getenv("ONEOFF")},
-		"two":   statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF")},
-		"three": statusSwitch{os.Getenv("THREEON"), os.Getenv("THREEOFF")},
-		"four":  statusSwitch{os.Getenv("FOURON"), os.Getenv("FOUROFF")},
+		"🌇":   statusSwitch{os.Getenv("ONEON"), os.Getenv("ONEOFF")},
+		"💡":   statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF")},
+		"🔦": statusSwitch{os.Getenv("THREEON"), os.Getenv("THREEOFF")},
 	}
 
 	key := os.Getenv("RFKEY")
@@ -24,7 +23,7 @@ func main() {
 		}
 		secret := r.Header.Get("badlykeptsecret")
 		if secret != key {
-			fmt.Fprintln(w, "¯\\_(ツ)_/¯")
+			fmt.Fprintln(w, "⛔")
 			return
 		}
 		d := json.NewDecoder(r.Body)
@@ -33,7 +32,7 @@ func main() {
 		s, exists := switches[dat.Switch]
 		if !exists {
 			fmt.Println(w, dat.Switch)
-			fmt.Fprintln(w, "¯\\_(ツ)_/¯ (no switch)")
+			fmt.Fprintln(w, "🔕")
 			return
 		}
 		if dat.Action == "on" {
@@ -43,10 +42,10 @@ func main() {
 		}
 		if dat.Action == "off" {
 			s.Off()
-			fmt.Fprintln(w, "👍❌")
+			fmt.Fprintln(w, "👍🌆")
 			return
 		}
-		fmt.Fprintln(w, "¯\\_(ツ)_/¯ (no action)")
+		fmt.Fprintln(w, "👾")
 		return
 	}
 	listSwitchesHandler := func(w http.ResponseWriter, r *http.Request) {

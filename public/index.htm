@@ -13,7 +13,7 @@
     font-size: 1em;
     padding-left: 0.5em;
     padding-right: 0.5em;
-    margin-left: 0.5em;
+    margin-right: 0.5em;
 
   }
   </style>
@@ -36,9 +36,9 @@
         Switch: sw,
         Action: a
       })
-     }).then((r)=>{
+     }).then((r) => {
         return r.text()
-     }).then((t)=>{
+     }).then((t) => {
         let e = document.getElementById('resp');
         e.innerHTML = sw + t;
       });
