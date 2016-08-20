@@ -12,6 +12,7 @@ func main() {
 		"🌇":   statusSwitch{os.Getenv("ONEON"), os.Getenv("ONEOFF")},
 		"💡":   statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF")},
 		"🔦": statusSwitch{os.Getenv("THREEON"), os.Getenv("THREEOFF")},
+		"🛰 ": statusSwitch{os.Getenv("FOURON"), os.Getenv("FOUROFF")},
 	}
 
 	key := os.Getenv("RFKEY")
