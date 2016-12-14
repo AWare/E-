@@ -46,7 +46,7 @@ func (s statusSwitch) Off() error {
 const path string = "/home/pi/433Utils/RPi_utils/codesend"
 
 func sendCode(code string) error {
-	for i := 1; i <= 10; i++ {
+	for i := 1; i <= 3; i++ {
 		c := exec.Command(path, code)
 		c.Run()
 		fmt.Println(c)
