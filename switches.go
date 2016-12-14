@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os/exec"
-	"time"
 )
 
 type statusSwitch struct {
@@ -27,7 +26,6 @@ func (m multiswitch) On() error {
 }
 
 func (m multiswitch) Off() error {
-	time.Sleep(10 * time.Second)
 	for _, s := range m.switches {
 		s.Off()
 	}
