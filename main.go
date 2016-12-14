@@ -5,20 +5,30 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
-	switches := map[string]statusSwitch{
-		"🌇":  statusSwitch{os.Getenv("ONEON"), os.Getenv("ONEOFF")},
-		"💡":  statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF")},
-		"🔦":  statusSwitch{os.Getenv("THREEON"), os.Getenv("THREEOFF")},
-		"🛰 ": statusSwitch{os.Getenv("FOURON"), os.Getenv("FOUROFF")},
-		"👍🏻": statusSwitch{os.Getenv("ONEAON"), os.Getenv("ONEAOFF")},
-		"🐕":  statusSwitch{os.Getenv("TWOAON"), os.Getenv("TWOAOFF")},
-		"🌎":  statusSwitch{os.Getenv("THREEAON"), os.Getenv("THREEAOFF")},
-		"📬":  statusSwitch{os.Getenv("FOURAON"), os.Getenv("FOURAOFF")},
-		"🎤":  statusSwitch{os.Getenv("AON"), os.Getenv("AOFF")},
+	switches := [...]statusSwitch{
+		statusSwitch{os.Getenv("ONEON"), os.Getenv("ONEOFF"), "🌇"},
+		statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF"), "💡"},
+		statusSwitch{os.Getenv("THREEON"), os.Getenv("THREEOFF"), "🔦"},
+		statusSwitch{os.Getenv("FOURON"), os.Getenv("FOUROFF"), "🛰 "},
+		statusSwitch{os.Getenv("ONEAON"), os.Getenv("ONEAOFF"), "👍🏻"},
+		statusSwitch{os.Getenv("TWOAON"), os.Getenv("TWOAOFF"), "🐕"},
+		statusSwitch{os.Getenv("THREEAON"), os.Getenv("THREEAOFF"), "🌎"},
+		statusSwitch{os.Getenv("FOURAON"), os.Getenv("FOURAOFF"), "📬"},
+		//	statusSwitch{os.Getenv("AON"), os.Getenv("AOFF"), "🎤"},
 	}
+	switchMap := make(map[string]switcher)
+
+	for _, s := range switches {
+		spew.Dump(s)
+		switchMap[s.name] = s
+	}
+	switchMap["all"] = multiswitch{switches[:]}
+	//spew.Dump(switchMap)
 
 	key := os.Getenv("RFKEY")
 
@@ -28,6 +38,7 @@ func main() {
 			Action string
 		}
 		secret := r.Header.Get("badlykeptsecret")
+
 		if secret != key {
 			fmt.Fprintln(w, "⛔")
 			return
@@ -35,7 +46,7 @@ func main() {
 		d := json.NewDecoder(r.Body)
 		d.Decode(&dat)
 		fmt.Println(dat)
-		s, exists := switches[dat.Switch]
+		s, exists := switchMap[dat.Switch]
 		if !exists {
 			fmt.Println(w, dat.Switch)
 			fmt.Fprintln(w, "🔕")
@@ -55,7 +66,7 @@ func main() {
 		return
 	}
 	listSwitchesHandler := func(w http.ResponseWriter, r *http.Request) {
-		s, _ := json.Marshal(switches)
+		s, _ := json.Marshal(switchMap)
 		fmt.Fprint(w, string(s))
 	}
 
