@@ -16,8 +16,10 @@ type switcher interface {
 type multiswitch struct{ switches []statusSwitch }
 
 func (m multiswitch) On() error {
-	for _, s := range m.switches {
-		s.On()
+	for i := 1; i <= 5; i++ {
+		for _, s := range m.switches {
+			s.On()
+		}
 	}
 	return nil
 }

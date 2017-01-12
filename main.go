@@ -11,12 +11,12 @@ import (
 
 func main() {
 	switches := [...]statusSwitch{
-		statusSwitch{os.Getenv("ONEON"), os.Getenv("ONEOFF"), "🌇"},
-		statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF"), "💡"},
+		statusSwitch{os.Getenv("ONEON"), os.Getenv("ONEOFF"), "window"},
+		statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF"), "table"},
 		statusSwitch{os.Getenv("THREEON"), os.Getenv("THREEOFF"), "🔦"},
 		statusSwitch{os.Getenv("FOURON"), os.Getenv("FOUROFF"), "🛰 "},
 		statusSwitch{os.Getenv("ONEAON"), os.Getenv("ONEAOFF"), "👍🏻"},
-		statusSwitch{os.Getenv("TWOAON"), os.Getenv("TWOAOFF"), "🐕"},
+		statusSwitch{os.Getenv("TWOAON"), os.Getenv("TWOAOFF"), "bed"},
 		statusSwitch{os.Getenv("THREEAON"), os.Getenv("THREEAOFF"), "🌎"},
 		statusSwitch{os.Getenv("FOURAON"), os.Getenv("FOURAOFF"), "📬"},
 		statusSwitch{os.Getenv("AON"), os.Getenv("AOFF"), "🎤"},
