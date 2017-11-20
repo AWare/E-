@@ -47,12 +47,12 @@ func main() {
 		}
 		if dat.Action == "on" {
 			go s.On()
-			fmt.Fprintln(w, "👍💡")
+			fmt.Fprintln(w, "👍🌄")
 			return
 		}
 		if dat.Action == "off" {
 			go s.Off()
-			fmt.Fprintln(w, "👍🌆")
+			fmt.Fprintln(w, "👍🌌")
 			return
 		}
 		fmt.Fprintln(w, "👾")
