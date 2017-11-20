@@ -12,7 +12,7 @@ import (
 func main() {
 	switches := [...]statusSwitch{
 		statusSwitch{os.Getenv("ONEON"), os.Getenv("ONEOFF"), "🛏"},
-		statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF"), "📚)"},
+		statusSwitch{os.Getenv("TWOON"), os.Getenv("TWOOFF"), "📚"},
 		statusSwitch{os.Getenv("FOURAON"), os.Getenv("FOURAOFF"), "🛋"},
 	}
 	switchMap := make(map[string]switcher)
