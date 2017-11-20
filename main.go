@@ -22,7 +22,6 @@ func main() {
 		switchMap[s.name] = s
 	}
 	switchMap["all"] = multiswitch{switches[:]}
-	//spew.Dump(switchMap)
 
 	key := os.Getenv("RFKEY")
 
